@@ -12,8 +12,11 @@ export class RegisterComponent {
   password: string = '';
 
   constructor(private authService: AuthService, private router: Router) {}
+  ngOnInit(): void {
+    // Assurez-vous qu'il n'y a pas de redirection ici
+  }
 
-  register() {
+  register_2() {
     this.authService.register(this.username, this.password).subscribe(
       () => {
         this.router.navigate(['/login']);
