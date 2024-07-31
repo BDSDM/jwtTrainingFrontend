@@ -12,16 +12,20 @@ export class LoginComponent {
   password: string = '';
 
   constructor(private authService: AuthService, private router: Router) {}
-
+  createNewAccount() {
+    this.router.navigate(['/home']);
+  }
   login() {
-    this.authService.login(this.username, this.password).subscribe(
-      (response) => {
+    this.authService.login(this.username, this.password).subscribe({
+      next: (response) => {
         localStorage.setItem('jwt', response.token);
+        console.log(response.token);
+
         this.router.navigate(['/home']);
       },
-      (error) => {
+      error: (error) => {
         console.error('Login error:', error);
-      }
-    );
+      },
+    });
   }
 }
