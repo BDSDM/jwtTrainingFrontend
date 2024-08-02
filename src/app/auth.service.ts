@@ -12,6 +12,10 @@ export class AuthService {
   private apiUrlD = 'http://localhost:8081/api/users/me';
   username: string = '';
   constructor(private http: HttpClient, private router: Router) {}
+
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('jwt');
+  }
   getUser(): Observable<User> {
     return this.http.get<User>(this.apiUrlD);
   }

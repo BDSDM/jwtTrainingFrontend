@@ -11,6 +11,7 @@ import { RegisterComponent } from './register/register.component';
 import { HomeComponent } from './home/home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { TokenInterceptorService } from './auth/token-interceptor.service';
+import { AuthGuard } from './home/auth.guard';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { TokenInterceptorService } from './auth/token-interceptor.service';
       useClass: TokenInterceptorService,
       multi: true,
     },
+    AuthGuard,
   ],
   bootstrap: [AppComponent],
 })
