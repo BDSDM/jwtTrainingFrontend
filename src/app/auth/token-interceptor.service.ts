@@ -34,7 +34,7 @@ export class TokenInterceptorService implements HttpInterceptor {
       catchError((error: HttpErrorResponse) => {
         console.error('HTTP Error occurred:', error);
         // Vous pouvez gérer les erreurs génériques ici si nécessaire
-        return throwError(error);
+        return throwError(() => new Error(error.message));
       })
     );
   }

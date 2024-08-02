@@ -1,16 +1,20 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { User } from './home/user.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private apiUrl = 'http://localhost:8081/api';
-
+  private apiUrlD = 'http://localhost:8081/api/users/me';
+  username: string = '';
   constructor(private http: HttpClient, private router: Router) {}
-
+  getUser(): Observable<User> {
+    return this.http.get<User>(this.apiUrlD);
+  }
   logout() {
     localStorage.removeItem('jwt');
     this.router.navigate(['/login']);
@@ -51,5 +55,8 @@ export class AuthService {
 
   getDashboardContent(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/admin/dashboard`);
+  }
+  getUsername(): string {
+    return this.username;
   }
 }

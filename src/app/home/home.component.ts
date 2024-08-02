@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
+import { User } from './user.model';
 
 @Component({
   selector: 'app-home',
@@ -8,7 +9,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
-  data: any;
+  username: string = '';
+  user!: User;
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -21,6 +23,11 @@ export class HomeComponent implements OnInit {
         console.error('Error:', error);
       }
     ); */
+    this.authService.getUser().subscribe({
+      next: (data: User) => {
+        this.username = data.username
+      },
+    });
   }
   deconnexion() {
     this.authService.logout();
