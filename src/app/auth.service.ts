@@ -9,9 +9,25 @@ import { User } from './home/user.model';
 })
 export class AuthService {
   private apiUrl = 'http://localhost:8081/api';
+  private apiUrlG = 'http://localhost:8081/api/admin';
   private apiUrlD = 'http://localhost:8081/api/users/me';
   username: string = '';
   constructor(private http: HttpClient, private router: Router) {}
+
+  addRoleToUser(userId: number, role: string): Observable<any> {
+    return this.http.post(`${this.apiUrlG}/user/${userId}/addRole`, role);
+  }
+
+  removeRoleFromUser(userId: number, role: string): Observable<any> {
+    return this.http.post(`${this.apiUrlG}/user/${userId}/removeRole`, role);
+  }
+
+  deleteUser(userId: number): Observable<any> {
+    return this.http.delete(`${this.apiUrlG}/user/${userId}`);
+  }
+  getAllUsers(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrlG}/all`);
+  }
 
   isLoggedIn(): boolean {
     return !!localStorage.getItem('jwt');
