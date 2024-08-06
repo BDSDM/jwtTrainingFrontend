@@ -1,8 +1,63 @@
-<div class="container">
-  <h2>Home Page</h2>
-  <p>Welcome to the home page!</p>
-</div>
-<button (click)="deconnexion()">Deconnexion</button>
-<div>
-  <h1 style="margin-left: 1rem">Bienvenue sur admin {{ username }}, !</h1>
+<!-- home.component.html -->
+<div class="container mt-5">
+  <div class="text-center">
+    <h2>Home Page</h2>
+    <p class="lead">
+      Welcome <strong>{{ username }}</strong> to the home page!
+    </p>
+    <button class="btn btn-danger" (click)="deconnexion()">Logout</button>
+  </div>
+
+  <div *ngIf="users.length > 0" class="mt-4">
+    <h2 class="mb-3">Welcome, {{ username }}</h2>
+
+    <h3 class="mb-3">All Users</h3>
+    <ul class="list-group">
+      <li
+        *ngFor="let user of users"
+        class="list-group-item d-flex justify-content-between align-items-center"
+        [ngClass]="{
+          active: user.id === selectedUserId,
+          'list-group-item-primary': user.id === selectedUserId
+        }"
+      >
+        <span>{{ user.username }}</span>
+        <div>
+          <span class="badge badge-info mr-2" *ngFor="let role of user.roles">
+            {{ role }}
+            <button
+              class="btn btn-sm btn-warning ml-1"
+              (click)="removeRole(user.id, role)"
+            >
+              Remove
+            </button>
+          </span>
+          <button
+            class="btn btn-primary btn-sm mr-2"
+            (click)="selectUser(user.id)"
+          >
+            Select
+          </button>
+          <button class="btn btn-danger btn-sm" (click)="deleteUser(user.id)">
+            Delete
+          </button>
+        </div>
+      </li>
+    </ul>
+
+    <div class="mt-4">
+      <h3>Add Role</h3>
+      <div class="input-group mb-3">
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="newRole"
+          placeholder="Enter role"
+        />
+        <div class="input-group-append">
+          <button class="btn btn-success" (click)="addRole()">Add Role</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
