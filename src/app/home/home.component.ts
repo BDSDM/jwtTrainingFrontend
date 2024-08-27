@@ -1,5 +1,3 @@
-// home.component.ts
-
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
@@ -11,15 +9,21 @@ import { User } from './user.model';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
+  colors: string[] = ['red', 'blue', 'green', 'yellow', 'purple'];
+  currentColor: string = 'white'; // Valeur par défaut initiale
   username: string = '';
   users: User[] = [];
-  user!: User;
   newRole: string = '';
   selectedUserId: number | null = null;
 
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
+    this.loadUserData();
+    this.loadColorPreference(); // Charger la couleur dès le chargement
+  }
+
+  loadUserData() {
     this.authService.getAllUsers().subscribe(
       (data) => {
         this.users = data;
@@ -32,6 +36,9 @@ export class HomeComponent implements OnInit {
     this.authService.getUser().subscribe({
       next: (data: User) => {
         this.username = data.username;
+      },
+      error: (error) => {
+        console.error('Error fetching user data', error);
       },
     });
   }
@@ -89,5 +96,30 @@ export class HomeComponent implements OnInit {
         }
       );
     }
+  }
+
+  setColor(color: string): void {
+    this.authService.setColorPreference(color).subscribe({
+      next: () => {
+        this.currentColor = color;
+        console.log('Couleur définie avec succès : ' + color);
+      },
+      error: (error) => {
+        console.error('Erreur lors de la définition de la couleur :', error);
+      },
+    });
+  }
+
+  loadColorPreference(): void {
+    this.authService.getColorPreference().subscribe({
+      next: (color) => {
+        console.log('Couleur récupérée du backend :', color);
+        this.currentColor = color || 'white'; // Appliquer la couleur récupérée
+      },
+      error: (error) => {
+        console.error('Erreur lors de la récupération de la couleur :', error);
+        this.currentColor = 'white'; // Définir la couleur par défaut en cas d'erreur
+      },
+    });
   }
 }

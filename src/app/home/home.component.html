@@ -61,3 +61,13 @@
     </div>
   </div>
 </div>
+<div [style.background-color]="currentColor" class="color-container">
+  <p>Choisissez une couleur de fond :</p>
+  <button
+    *ngFor="let color of colors"
+    [style.background-color]="color"
+    (click)="setColor(color)"
+  >
+    {{ color }}
+  </button>
+</div>
